@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/feedback"
+    style="@style/Screen"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/getBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#0069DCD4"
+            android:contentDescription="@string/back"
+            android:padding="14dp"
+            android:src="@drawable/return_back_arrow" />
+
+        <TextView
+            android:layout_width="203dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="86dp"
+            android:layout_toEndOf="@+id/getBack"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:text="@string/feedback" />
+    </RelativeLayout>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/topicFA"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center|start"
+        android:hint="@string/topic_feedback"
+        android:inputType="textEmailSubject"
+        android:paddingHorizontal="16dp"
+        android:textSize="16sp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/emailFA"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center|start"
+        android:hint="@string/email_feedback"
+        android:inputType="textEmailAddress"
+        android:paddingHorizontal="16dp"
+        android:textSize="14sp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/feedbackMsgFA"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:gravity="center|start"
+        android:hint="@string/feedback"
+        android:paddingHorizontal="16dp"
+        android:textSize="20sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/sendFA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/round_back_diqka4"
+        android:paddingHorizontal="16dp"
+        android:text="@string/send"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+</LinearLayout>

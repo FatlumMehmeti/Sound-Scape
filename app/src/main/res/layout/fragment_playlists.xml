@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Screen"
+    tools:context=".Playlists">
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/tracks"
+            android:layout_width="135dp"
+            android:layout_height="match_parent"
+            android:text="@string/tracks" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/favorites"
+            android:layout_width="135dp"
+            android:layout_height="match_parent"
+
+            android:text="@string/favorites" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/mostPlayed"
+            android:layout_width="135dp"
+            android:layout_height="match_parent"
+            android:text="@string/most_played" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/play_fragments"
+        android:layout_width="412dp"
+        android:layout_height="692dp"
+        android:layout_below="@+id/buttons"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-413dp"
+        android:layout_marginTop="-9dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@id/buttons" />
+</RelativeLayout>

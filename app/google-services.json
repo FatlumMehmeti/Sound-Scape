@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "618380013782",
+    "project_id": "sound-scape-eaada",
+    "storage_bucket": "sound-scape-eaada.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618380013782:android:52205dbdba9d7e7e121977",
+        "android_client_info": {
+          "package_name": "com.example.sound_scape"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3x8EgTpoU-2Vn2lTofBHOzTfgX4_EZGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

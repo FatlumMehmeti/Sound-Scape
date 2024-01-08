@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/public_private_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Public State -->
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#4CAF50" />
+            <corners android:radius="@dimen/radius_100" />
+        </shape>
+    </item>
+
+    <!-- Private State -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FF5252" />
+            <corners android:radius="@dimen/radius_100" />
+        </shape>
+    </item>
+
+</selector>

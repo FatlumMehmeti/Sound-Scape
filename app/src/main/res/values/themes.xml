@@ -2,8 +2,92 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Sound_Scape" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+         <item name="colorPrimary">@color/primary_color</item>
     </style>
 
     <style name="Theme.Sound_Scape" parent="Base.Theme.Sound_Scape" />
+    <!--Night mode-->
+
+    <style name="night_mode_switch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/night_mode</item>
+        <item name="colorSwitchThumbNormal">@color/white</item>
+        <item name="android:colorForeground">#99FFFFFF</item>
+    </style>
+    <!--Notifications-->
+    <style name="notificatons" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/night_mode</item>
+        <item name="colorSwitchThumbNormal">@color/white</item>
+        <item name="android:colorForeground">#99FFFFFF</item>
+    </style>
+    <!--    <style name="ButtonGreen" parent="Theme.AppCompat.Light">-->
+    <!--        <item name="colorControlActivated">@color/black</item>-->
+    <!--        <item name="colorSwitchThumbNormal">@color/colorPrimary</item>-->
+    <!--        <item name="android:colorForeground">#9907D1A9</item>-->
+    <!--    </style>-->
+    <style name="splash_screes" parent="Theme.AppCompat.Light.DarkActionBar">
+        
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        
+    </style>
+    <!--security-->
+    <style name="notificatons_mode_switch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/night_mode</item>
+        <item name="colorSwitchThumbNormal">@color/white</item>
+        <item name="android:colorForeground">#99FFFFFF</item>
+    </style>
+
+    <style name="ButtonWhite">
+        <item name="android:background">@drawable/white_bt</item>
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:textColor">@color/teal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ButtonGreen">
+        <item name="android:background">@drawable/bt_bg</item>
+        <item name="android:backgroundTint">@color/primary_color</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="ButtonGrey" >
+        <item name="android:background">@drawable/bt_bg</item>
+        <item name="backgroundTint">@color/grey</item>
+        <item name="android:enabled">false</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="Title">
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SubTitle">
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="TextInput" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <style name="Screen">
+        <item name="android:background">@drawable/back_light</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>
