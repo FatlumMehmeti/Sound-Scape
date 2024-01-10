@@ -25,7 +25,6 @@ class Settings : Fragment(R.layout.fragment_settings) {
     private lateinit var mainactivity: MainActivity
 
     private lateinit var sharedPreferences: SharedPreferences
-    //private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreateView(
         inflater: LayoutInflater,

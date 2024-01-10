@@ -62,8 +62,18 @@ class HomeFragment : Fragment() {
 
                 if (snapshot.exists()) {
                     for (musicSnap in snapshot.children) {
-                        val musicData = musicSnap.getValue(Music::class.java)
-                        musicList.add(musicData!!)
+                        val newMusic = Music(
+                            musicSnap.child("songtitle").getValue().toString(),
+                            musicSnap.child("artistname").getValue().toString(),
+                            musicSnap.child("albumname").getValue().toString(),
+                            musicSnap.child("releaseyear").getValue().toString(),
+                            musicSnap.child("genre").getValue().toString(),
+                            musicSnap.child("imageUrl").getValue().toString(),
+                            musicSnap.child("favorite").getValue().toString().toBoolean(),
+                            musicSnap.child("songPlayed").getValue().toString().toLong(),
+                            musicSnap.child("audioUrl").getValue().toString()
+                        )
+                        musicList.add(newMusic)
                     }
 
                     // Notify the adapter about the data change
@@ -79,35 +89,7 @@ class HomeFragment : Fragment() {
             }
         })
     }
-//    private fun getMusicData() {
-//        dbRef = FirebaseDatabase.getInstance().getReference("Music")
-//
-//        dbRef.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                musicList.clear()
-//
-//                // Check if the fragment is still attached
-//                if (!isAdded) return
-//
-//                if (snapshot.exists()) {
-//                    for (musicSnap in snapshot.children) {
-//                        val musicData = musicSnap.getValue(Music::class.java)
-//                        musicList.add(musicData!!)
-//                    }
-//
-//                    // Notify the adapter about the data change
-//                    musicAdapter.notifyDataSetChanged()
-//
-//                    // Update the total song count
-//                    binding.TotalSongs.text = "Total Songs: ${musicList.size}"
-//                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                // Handle onCancelled event if needed
-//            }
-//        })
-//    }
+
 
 
 

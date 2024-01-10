@@ -7,6 +7,8 @@ data class Music(
     var releaseyear: String = "",
     var gener: String = "",
     val imageUrl: String? = null ,
+    var favorite:Boolean =false,
+    val songPlayed:Long =0,
     var audioUrl: String = ""
 
     ) {}

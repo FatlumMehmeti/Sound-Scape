@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.sound_scape.FavoriteAdapter
+import com.example.sound_scape.MainActivity
+import com.example.sound_scape.MostPlayedAdapter
 import com.example.sound_scape.Music
 import com.example.sound_scape.R
 import com.example.sound_scape.databinding.FragmentFavoriteBinding
 import com.example.sound_scape.databinding.FragmentMostPlayedBinding
-import com.example.teste_per_app.playlists.playlistsadapters.FavoriteAdapter
 import com.example.teste_per_app.settings.reporitoris_for_settings.AddSong
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,8 +25,8 @@ class MostPlayedFragment : Fragment() {
     private var _binding: FragmentMostPlayedBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var musicAdapter: FavoriteAdapter
-    private lateinit var musicList: ArrayList<AddSong>
+    private lateinit var musicAdapter: MostPlayedAdapter
+    private lateinit var musicList: ArrayList<Music>
     private lateinit var dbRef: DatabaseReference
 
     override fun onCreateView(
@@ -48,8 +50,9 @@ class MostPlayedFragment : Fragment() {
         binding.favRec.layoutManager = GridLayoutManager(requireContext(), 4)
 
         // Initialize the adapter
-        musicAdapter = FavoriteAdapter(musicList)
-        binding.favRec.adapter = musicAdapter
+        val mainActivity=activity as MainActivity
+        musicAdapter = MostPlayedAdapter(requireContext(),mainActivity,musicList)
+        _binding!!.favRec.adapter = musicAdapter
 
         // Retrieve and display total song count
         //getMusicData()
@@ -59,28 +62,34 @@ class MostPlayedFragment : Fragment() {
 //        musicList.add(Music("Muxi", "Prova","Prova",false, null, R.drawable.illustration))
 //        musicList.add(Music("Test", "Prova","Prova",false, null, R.drawable.home_icon))
 //    }
-    private fun getMusicData() {
-        dbRef = FirebaseDatabase.getInstance().getReference("songs")
+private fun getMusicData() {
+    dbRef = FirebaseDatabase.getInstance().getReference("Music")
 
-        dbRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                musicList.clear()
-                if (snapshot.exists()) {
-                    for (musicSnap in snapshot.children) {
-                        val musicData = musicSnap.getValue(AddSong::class.java)
-                        musicList.add(musicData!!)
-                    }
+    dbRef.addValueEventListener(object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            musicList.clear()
 
-                    // Notify the adapter about the data change
-                    musicAdapter.notifyDataSetChanged()
+            // Check if the fragment is still attached
+            if (!isAdded) return
+
+            if (snapshot.exists()) {
+                for (musicSnap in snapshot.children) {
+                    val musicData = musicSnap.getValue(Music::class.java)
+                    musicList.add(musicData!!)
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Handle onCancelled event if needed
+                // Notify the adapter about the data change
+                musicAdapter.notifyDataSetChanged()
+
+                // Update the total song count
             }
-        })
-    }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            // Handle onCancelled event if needed
+        }
+    })
+}
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -24,16 +24,21 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import java.util.Objects
+import kotlin.properties.Delegates
 
-class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player), MusicAdapter.OnItemClickListener {
+class MusicView(songPosition:Int,musicList : ArrayList<Music>) : Fragment(R.layout.music_player), MusicAdapter.OnItemClickListener {
 
     private lateinit var mediaPlayer: MediaPlayer
     var songList =  musicList
-    private var currentSongIndex: Int = 0
+    private var currentSongIndex: Int = songPosition
+     var isPlaying: Boolean = false
     private var isShuffleEnabled: Boolean = false
     private var isRepeatEnabled: Boolean = false
     private lateinit var playPauseButton: ImageView
     private lateinit var songTitle: TextView
+    private lateinit var imgIcon:ImageView
     private lateinit var totalTime: TextView
     private lateinit var currentTime: TextView
     private lateinit var seekBar: Slider
@@ -41,14 +46,26 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
     private var originalSongList: List<Music> = emptyList()
     lateinit var view2 : View
 
+    companion object {
+        private lateinit var mediaPlayer: MediaPlayer
+
+        fun getMediaPlayerInstance(): MediaPlayer {
+            if (!::mediaPlayer.isInitialized) {
+                mediaPlayer = MediaPlayer()
+            }
+            return mediaPlayer
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(songList.size.toString(),"SIZEIII I LISTETTTSTS")
         view2 = view
         // Initialize mediaPlayer
         mediaPlayer = MediaPlayer()
 
         songTitle = view.findViewById(R.id.song_title)
+        imgIcon=view.findViewById(R.id.music_icon_big)
         totalTime =  view.findViewById(R.id.total_time)
         seekBar =  view.findViewById(R.id.seek_bar)
         currentTime =  view.findViewById(R.id.current_time)
@@ -59,9 +76,6 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
             mainactivity.replaceFragment(HomeFragment())
         }
 
-
-        val musicAdapter = MusicAdapter(requireContext(),mainactivity,songList)
-        musicAdapter.setOnItemClickListener(this)
         val intent = Intent(requireContext(), BackgroundMusicService::class.java)
         mainactivity.startService(intent)
 
@@ -71,15 +85,31 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
         val previousButton: ImageView = view.findViewById(R.id.previous)
         val shuffleButton: ImageView = view.findViewById(R.id.shuffle)
         val repeatButton: ImageView = view.findViewById(R.id.repeat)
+        val likesong :ImageView = view.findViewById(R.id.like)
 
         playPauseButton.setOnClickListener {
             togglePlayback()
         }
-
+        // Check and update play/pause button based on MediaPlayer state
+        if (getMediaPlayerInstance().isPlaying) {
+            playPauseButton.setImageResource(R.drawable.pause_button)
+        } else {
+            playPauseButton.setImageResource(R.drawable.play_icon)
+        }
         nextButton.setOnClickListener {
             playNextSong()
         }
-
+//        likesong.setOnClickListener {
+//            if(songList[currentSongIndex].favorite==false){
+//                songList[currentSongIndex].favorite=true
+//                FirebaseDatabase.getInstance().getReference("Music").child(songList[currentSongIndex].songtitle).child("favorite").setValue(true)
+//              likesong.setImageResource(R.drawable.favorite)
+//            }else if(songList[currentSongIndex].favorite==true){
+//                songList[currentSongIndex].favorite=false
+//                FirebaseDatabase.getInstance().getReference("Music").child(songList[currentSongIndex].songtitle).child("favorite").setValue(false)
+//                likesong.setImageResource(R.drawable.favorite)
+//            }
+//        }
         previousButton.setOnClickListener {
             playPreviousSong()
         }
@@ -104,11 +134,7 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer.release()
-        handler.removeCallbacksAndMessages(null)
-    }
+
 
     private fun formatTime(duration: Int): String {
         val minutes = duration / 1000 / 60
@@ -137,6 +163,7 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
             val progress = (mediaPlayer.duration * value / 100).toInt()
             mediaPlayer.seekTo(progress)
             currentTime.text = formatTime(progress)
+
         }
 
         handler.post(object : Runnable {
@@ -149,13 +176,18 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
                 handler.postDelayed(this, 1000) // Update every second
             }
         })
+
+
+
     }
 
     private fun togglePlayback() {
                 if (mediaPlayer.isPlaying()) {
+                    isPlaying=false
                     mediaPlayer.pause()
                     playPauseButton.setImageResource(R.drawable.play_icon)
                 } else {
+                    isPlaying=true
                     mediaPlayer.start()
                     playPauseButton.setImageResource(R.drawable.pause_button)
                 }
@@ -165,10 +197,11 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
         Log.d("songListSie:" , songList.size.toString())
         Log.d("songListSie:" , currentSongIndex.toString())
 
-        currentSongIndex++
 
         if(currentSongIndex==songList.size){
             currentSongIndex = 0
+        }else{
+            currentSongIndex++
         }
 
         if(currentSongIndex<=songList.size-1) {
@@ -199,8 +232,37 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
             mediaPlayer.stop()
             mediaPlayer.reset()
         }
+        val databaseReference = FirebaseDatabase.getInstance().getReference("Music").child(selectedMusic.songtitle)
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val currentSongPlayed = snapshot.child("songPlayed").getValue().toString().toInt()
+                databaseReference.child("songPlayed").setValue(currentSongPlayed + 1)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle onCancelled event if needed
+            }
+        })
 
         songTitle.text = selectedMusic.songtitle
+        if (!selectedMusic.imageUrl.isNullOrBlank()) {
+            val storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(selectedMusic.imageUrl)
+
+            storageReference.downloadUrl.addOnSuccessListener { uri ->
+                Picasso.get()
+                    .load(uri)
+                    .fit()
+                    .centerInside()
+                    .placeholder(R.drawable.music_note_icon)
+                    .into(imgIcon)
+            }.addOnFailureListener {
+                // Handle failure to load image
+                imgIcon.setImageResource(R.drawable.music_note_icon)
+            }
+        } else {
+            // Load a placeholder image if imageUrl is empty or null
+            imgIcon.setImageResource(R.drawable.music_note_icon)
+        }
 
         try {
             mediaPlayer.setDataSource(requireContext(), Uri.parse(selectedMusic.audioUrl))
@@ -257,246 +319,9 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
 
         playPauseButton.setImageResource(R.drawable.pause_button)
         totalTime.text = formatTime(mediaPlayer.duration)    }
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        handler.removeCallbacksAndMessages(null)
+    }
 }
-
-//
-//import android.content.Intent
-//import android.media.MediaPlayer
-//import android.net.Uri
-//import android.os.Bundle
-//import android.os.Handler
-//import android.widget.ImageView
-//import android.widget.TextView
-//import androidx.appcompat.app.AppCompatActivity
-//import com.example.sound_scape.Music
-//import com.example.sound_scape.MusicAdapter
-//import com.example.sound_scape.player.BackgroundMusicService
-//import com.example.sound_scape.R
-//import com.google.android.material.slider.Slider
-//
-//class MusicView : AppCompatActivity(),MusicAdapter.OnItemClickListener {
-//
-//    private lateinit var mediaPlayer: MediaPlayer
-//    private lateinit var songList: ArrayList<Music>
-//    private var currentSongIndex: Int = 0
-//    private var isShuffleEnabled: Boolean = false
-//    private var isRepeatEnabled: Boolean = false
-//    private lateinit var playPauseButton: ImageView
-//    private lateinit var songTitle: TextView
-//    private lateinit var totalTime: TextView
-//    private lateinit var currentTime: TextView
-//    private lateinit var seekBar: Slider
-//    private val handler = Handler()
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.music_player)
-//
-//        // Initialize mediaPlayer
-//        mediaPlayer = MediaPlayer()
-//
-//        songTitle = findViewById(R.id.song_title)
-//        totalTime = findViewById(R.id.total_time)
-//        seekBar = findViewById(R.id.seek_bar)
-//        currentTime = findViewById(R.id.current_time)
-//
-//        val musicAdapter = MusicAdapter(songList)
-//        musicAdapter.setOnItemClickListener(this)
-//        val intent = Intent(this, BackgroundMusicService::class.java)
-//        startService(intent)
-//
-//        var originalSongList = songList.toList()
-//        playPauseButton = findViewById(R.id.pause_play)
-//        val nextButton: ImageView = findViewById(R.id.next)
-//        val previousButton: ImageView = findViewById(R.id.previous)
-//        val shuffleButton: ImageView = findViewById(R.id.shuffle)
-//        val repeatButton: ImageView = findViewById(R.id.repeat)
-//
-//        playPauseButton.setOnClickListener {
-//            togglePlayback()
-//        }
-//
-//        nextButton.setOnClickListener {
-//            playNextSong()
-//        }
-//
-//        previousButton.setOnClickListener {
-//            playPreviousSong()
-//        }
-//
-//        shuffleButton.setOnClickListener {
-//            // Implement shuffle functionality
-//            toggleShuffle()
-//        }
-//
-//        repeatButton.setOnClickListener {
-//            // Implement repeat functionality
-//            toggleRepeat()
-//        }
-//
-//        setupMediaPlayer()
-//        setupSeekBar()
-//
-//        // Check if songList is not empty before attempting to play the first song
-//        if (songList.isNotEmpty()) {
-//            val firstSong = songList[0]
-//            playSong(firstSong)
-//        }}
-//    private fun playSong(selectedMusic: Music) {
-//        if (mediaPlayer.isPlaying) {
-//            mediaPlayer.stop()
-//            mediaPlayer.reset()
-//        }
-//
-//        mediaPlayer.setDataSource(this, Uri.parse(selectedMusic.audioUrl))
-//        mediaPlayer.prepare()
-//        mediaPlayer.start()
-//
-//        playPauseButton.setImageResource(R.drawable.pause_button)
-//        totalTime.text = formatTime(mediaPlayer.duration)
-//    }
-//
-//    private fun toggleRepeat() {
-//        // Toggle repeat status and update UI accordingly
-//        val repeatButton: ImageView = findViewById(R.id.repeat)
-//        isRepeatEnabled = !isRepeatEnabled
-//
-//        // Update UI based on repeat status
-//        if (isRepeatEnabled) {
-//            // Change the repeat button icon to "enabled"
-//            repeatButton.setImageResource(R.drawable.repeat_on)
-//        } else {
-//            // Change the repeat button icon to "disabled"
-//            repeatButton.setImageResource(R.drawable.repeat_icon)
-//        }
-//    }
-//
-//        private fun toggleShuffle() {
-//        val shuffleButton: ImageView = findViewById(R.id.shuffle)
-//        isShuffleEnabled = !isShuffleEnabled // Toggle shuffle status
-//
-//        if (isShuffleEnabled) {
-//            // Change the shuffle button icon to "enabled"
-//            shuffleButton.setImageResource(R.drawable.shuffle_on)
-//
-//            // Shuffle the song list
-//        } else {
-//            // Change the shuffle button icon to "disabled"
-//            shuffleButton.setImageResource(R.drawable.shuffle_icon)
-//
-//            // Revert to the original song list order
-//
-//        }
-//    }
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        mediaPlayer.release()
-//        handler.removeCallbacksAndMessages(null)
-//    }
-//
-//    private fun formatTime(duration: Int): String {
-//        val minutes = duration / 1000 / 60
-//        val seconds = duration / 1000 % 60
-//        return String.format("%02d:%02d", minutes, seconds)
-//    }
-//
-//    private fun setupMediaPlayer() {
-//        mediaPlayer.setOnCompletionListener {
-//            if (isRepeatEnabled) {
-//                mediaPlayer.seekTo(0)
-//                mediaPlayer.start()
-//            } else {
-//                if (isShuffleEnabled) {
-//                    playRandomSong()
-//                } else {
-//                    playNextSong()
-//                }
-//            }
-//        }
-//    }
-//
-//
-//
-//    private fun setupSeekBar() {
-//        seekBar.addOnChangeListener { _, value, _ ->
-//            val progress = (mediaPlayer.duration * value / 100).toInt()
-//            mediaPlayer.seekTo(progress)
-//            currentTime.text = formatTime(progress)
-//        }
-//
-//        handler.post(object : Runnable {
-//            override fun run() {
-//                if (mediaPlayer.isPlaying) {
-//                    val currentPosition = mediaPlayer.currentPosition
-//                    seekBar.value = (currentPosition.toFloat() / mediaPlayer.duration.toFloat()) * 100
-//                    currentTime.text = formatTime(currentPosition)
-//                }
-//                handler.postDelayed(this, 1000) // Update every second
-//            }
-//        })
-//    }
-//
-//
-//
-//
-//    private fun togglePlayback() {
-//        if (mediaPlayer.isPlaying) {
-//            mediaPlayer.pause()
-//            playPauseButton.setImageResource(R.drawable.play_icon)
-//        } else {
-//            mediaPlayer.start()
-//            playPauseButton.setImageResource(R.drawable.pause_button)
-//        }
-//    }
-//
-//    private fun playNextSong() {
-//        currentSongIndex++
-//        if (currentSongIndex >= songList.size) {
-//            currentSongIndex = 0
-//        }
-//        val nextSong = songList[currentSongIndex]
-//        playSong(nextSong)
-//    }
-//
-//    private fun playPreviousSong() {
-//        currentSongIndex--
-//        if (currentSongIndex < 0) {
-//            currentSongIndex = songList.size - 1
-//        }
-//        val previousSong = songList[currentSongIndex]
-//        playSong(previousSong)
-//    }
-//
-//    private fun playRandomSong() {
-//        val randomIndex = (0 until songList.size).random()
-//        val randomSong = songList[randomIndex]
-//        playSong(randomSong)
-//    }
-//
-//    private fun playSong(selectedMusic: Music) {
-//        mediaPlayer.reset()
-//        mediaPlayer = MediaPlayer.create(this, Uri.parse(selectedMusic.audioUrl))
-//        mediaPlayer.start()
-//        playPauseButton.setImageResource(R.drawable.pause_button)
-//        totalTime.text = formatTime(mediaPlayer.duration)
-//    }
-//
-////    private fun playSong(song: Int) {
-////        mediaPlayer.reset()
-////        mediaPlayer = MediaPlayer.create(this, song)
-////        mediaPlayer.start()
-////        playPauseButton.setImageResource(R.drawable.pause_button)
-////        totalTime.text = formatTime(mediaPlayer.duration)
-////    }
-//    override fun onItemClick(position: Int, music: Music) {
-//        // Handle the logic for playing the selected music directly in this activity
-//        mediaPlayer.reset()
-//        mediaPlayer = MediaPlayer.create(this, Uri.parse(music.audioUrl))
-//        mediaPlayer.start()
-//
-//        playPauseButton.setImageResource(R.drawable.pause_button)
-//        totalTime.text = formatTime(mediaPlayer.duration)
-//    }
-//
-//
-//}

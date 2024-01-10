@@ -10,7 +10,7 @@ import com.example.sound_scape.Music
 import com.example.sound_scape.R
 import com.example.sound_scape.databinding.FragmentMostPlayedBinding
 import com.example.sound_scape.databinding.FragmentTracksBinding
-import com.example.teste_per_app.playlists.playlistsadapters.FavoriteAdapter
+import com.example.teste_per_app.playlists.playlistsadapters.TracksAdapter
 import com.example.teste_per_app.settings.reporitoris_for_settings.AddSong
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,7 +23,7 @@ class TracksFragment : Fragment() {
     private var _binding: FragmentTracksBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var musicAdapter: FavoriteAdapter
+    private lateinit var musicAdapter: TracksAdapter
     private lateinit var musicList: ArrayList<AddSong>
     private lateinit var dbRef: DatabaseReference
 
@@ -48,7 +48,7 @@ class TracksFragment : Fragment() {
         binding.favRec.layoutManager = GridLayoutManager(requireContext(), 4)
 
         // Initialize the adapter
-        musicAdapter = FavoriteAdapter(musicList)
+        musicAdapter = TracksAdapter(musicList)
         binding.favRec.adapter = musicAdapter
 
         // Retrieve and display total song count
