@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/Screen">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="68dp"
+            android:layout_height="56dp"
+            android:padding="14dp"
+            android:src="@drawable/return_back_arrow" />
+
+        <TextView
+            android:id="@+id/song_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:ellipsize="marquee"
+            android:padding="20dp"
+            android:singleLine="true"
+            android:text="Title of the song"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/like"
+            android:layout_width="68dp"
+            android:layout_height="56dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            app:srcCompat="@drawable/empty_favorite_icon" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/music_icon_big"
+        android:layout_width="308dp"
+        android:layout_height="268dp"
+        android:layout_above="@id/controls"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="-2dp"
+        android:background="@drawable/round_back_add"
+        android:padding="20dp"
+        android:src="@drawable/music_note_icon" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/controls"
+        android:padding="40dp">
+
+        <RelativeLayout
+            android:id="@+id/relativelayout"
+            android:layout_width="371dp"
+            android:layout_height="123dp"
+            android:layout_below="@+id/total_time"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp">
+
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/shuffle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="72dp"
+                android:background="@drawable/round_back_diqka"
+                android:contentDescription="shuffel"
+                android:src="@drawable/shuffle_icon" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/repeat"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginBottom="62dp"
+                android:contentDescription="repeate"
+                android:background="@drawable/round_back_diqka"
+                android:src="@drawable/repeat_icon" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/pause_play"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="140dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginBottom="9dp"
+                android:contentDescription="pause/play"
+                android:background="@drawable/round_back_add"
+                android:src="@drawable/pause_button" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/next"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="37dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginBottom="36dp"
+                android:layout_toEndOf="@+id/pause_play"
+                android:contentDescription="next_button"
+                android:background="@drawable/round_back_add"
+                android:src="@drawable/next_button" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/previous"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="69dp"
+                android:layout_marginTop="37dp"
+                android:layout_marginEnd="120dp"
+                android:layout_marginBottom="36dp"
+                android:contentDescription="previous"
+                android:background="@drawable/round_back_add"
+                android:src="@drawable/previous_button" />
+
+
+        </RelativeLayout>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/seek_bar"
+            android:layout_width="293dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="38dp"
+            android:layout_marginEnd="40dp"
+            android:valueFrom="0"
+            android:valueTo="100"
+            android:contentDescription="Seek bar"
+            app:labelBehavior="gone"
+            app:thumbColor="@color/light_blue"
+            app:trackColor="@color/light_blue"
+            app:trackColorInactive="#fbb999" />
+
+        <TextView
+            android:id="@+id/current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seek_bar"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/counters"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seek_bar"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/counters"
+            android:textColor="@color/white" />
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

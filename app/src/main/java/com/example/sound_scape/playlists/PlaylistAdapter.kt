@@ -40,8 +40,8 @@ class PlaylistAdapter(private var musicList: ArrayList<Music>) :
     class ViewHolder(private val binding: MusicViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(currentMusic: Music, listener: OnItemClickListener?) {
-            binding.songNameMV.text = currentMusic.songTitle
-            binding.songAlbumMV.text = currentMusic.albumName
+            binding.songNameMV.text = currentMusic.songtitle
+            binding.songAlbumMV.text = currentMusic.albumname
 //            if (currentMusic.isRemote) {
 //                // Load from remote URL
 //                Picasso.get()

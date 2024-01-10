@@ -73,7 +73,6 @@ class Add_song : Fragment(R.layout.fragment_add_song) {
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(intent, 200)
     }
-
     private fun addSongToDatabase() {
         // Retrieve data from UI fields
         val songName = binding.songTitleEditText.text.toString()
@@ -82,41 +81,79 @@ class Add_song : Fragment(R.layout.fragment_add_song) {
         val releaseYear = binding.releaseYearEditText.text.toString()
         val genre = binding.genreEditText.text.toString()
 
-        // Check if image and audio files are selected
-        if ( selectedAudioUri == null) {
+        // Check if audio file is selected
+        if (selectedAudioUri == null) {
             Toast.makeText(context, "Please select an audio file", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Upload image and audio files to Firebase Storage
-        val imageFileName = "images/${UUID.randomUUID()}"
+        // Upload audio file to Firebase Storage
         val audioFileName = "audio/${UUID.randomUUID()}"
-
-        val imageStorageReference = FirebaseStorage.getInstance().getReference(imageFileName)
         val audioStorageReference = FirebaseStorage.getInstance().getReference(audioFileName)
-
-        val imageUploadTask = imageStorageReference.putFile(selectedImageUri!!)
         val audioUploadTask = audioStorageReference.putFile(selectedAudioUri!!)
 
         progressDialog.show()
 
         // Add an OnProgressListener to track the upload progress
-        imageUploadTask.addOnProgressListener { snapshot ->
+        audioUploadTask.addOnProgressListener { snapshot ->
             val progress = (100.0 * snapshot.bytesTransferred / snapshot.totalByteCount).toInt()
             progressDialog.progress = progress
         }
 
-        // Wait for both tasks to complete
-        Tasks.whenAll(imageUploadTask, audioUploadTask)
-            .addOnSuccessListener {
-                progressDialog.dismiss()
+        // Wait for the audio upload task to complete
+        audioUploadTask.addOnSuccessListener { audioUploadTaskSnapshot ->
+            progressDialog.dismiss()
 
-                // Get the download URLs for the uploaded files
-                val imageUrl = imageStorageReference.downloadUrl.toString()
-                val audioUrl = audioStorageReference.downloadUrl.toString()
+            // Get the download URL for the uploaded audio file
+            val audioUrl = audioUploadTaskSnapshot.storage.downloadUrl.toString()
 
-                // Create an AddSong object with the retrieved data
-                val addSong = AddSong(songName, artistName, albumName, releaseYear, genre, imageUrl, audioUrl)
+            // Check if image file is selected
+            if (selectedImageUri != null) {
+                // Upload image file to Firebase Storage
+                val imageFileName = "images/${UUID.randomUUID()}"
+                val imageStorageReference = FirebaseStorage.getInstance().getReference(imageFileName)
+                val imageUploadTask = imageStorageReference.putFile(selectedImageUri!!)
+
+                progressDialog.show()
+
+                // Add an OnProgressListener to track the upload progress
+                imageUploadTask.addOnProgressListener { imageSnapshot ->
+                    val progress = (100.0 * imageSnapshot.bytesTransferred / imageSnapshot.totalByteCount).toInt()
+                    progressDialog.progress = progress
+                }
+
+                // Wait for the image upload task to complete
+                imageUploadTask.addOnSuccessListener { imageUploadTaskSnapshot ->
+                    progressDialog.dismiss()
+
+                    // Get the download URL for the uploaded image file
+                    val imageUrl = imageUploadTaskSnapshot.storage.downloadUrl.toString()
+
+                    // Create an AddSong object with the retrieved data
+                    val addSong = AddSong(songName, artistName, albumName, releaseYear, genre, imageUrl, audioUrl)
+
+                    // Save the AddSong object to the Firebase database
+                    database.child(songName).setValue(addSong)
+                        .addOnSuccessListener {
+                            // Clear UI fields on successful save
+                            binding.songTitleEditText.text.clear()
+                            binding.artistNameEditText.text.clear()
+                            binding.albumNameLabel.text.clear()
+                            binding.releaseYearEditText.text.clear()
+                            binding.genreEditText.text.clear()
+                            Toast.makeText(context, "Successfully saved", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Failed to save", Toast.LENGTH_SHORT).show()
+                        }
+                }
+                    .addOnFailureListener {
+                        progressDialog.dismiss()
+                        Toast.makeText(context, "Failed to upload image", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                // If no image is selected, create an AddSong object without imageUrl
+                val addSong = AddSong(songName, artistName, albumName, releaseYear, genre, null, audioUrl)
 
                 // Save the AddSong object to the Firebase database
                 database.child(songName).setValue(addSong)
@@ -133,11 +170,78 @@ class Add_song : Fragment(R.layout.fragment_add_song) {
                         Toast.makeText(context, "Failed to save", Toast.LENGTH_SHORT).show()
                     }
             }
+        }
             .addOnFailureListener {
                 progressDialog.dismiss()
-                Toast.makeText(context, "Failed to upload files", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Failed to upload audio", Toast.LENGTH_SHORT).show()
             }
     }
+
+
+//    private fun addSongToDatabase() {
+//        // Retrieve data from UI fields
+//        val songName = binding.songTitleEditText.text.toString()
+//        val artistName = binding.artistNameEditText.text.toString()
+//        val albumName = binding.albumNameLabel.text.toString()
+//        val releaseYear = binding.releaseYearEditText.text.toString()
+//        val genre = binding.genreEditText.text.toString()
+//
+//        // Check if image and audio files are selected
+//        if ( selectedAudioUri == null) {
+//            Toast.makeText(context, "Please select an audio file", Toast.LENGTH_SHORT).show()
+//            return
+//        }
+//
+//        // Upload image and audio files to Firebase Storage
+//        val imageFileName = "images/${UUID.randomUUID()}"
+//        val audioFileName = "audio/${UUID.randomUUID()}"
+//
+//        val imageStorageReference = FirebaseStorage.getInstance().getReference(imageFileName)
+//        val audioStorageReference = FirebaseStorage.getInstance().getReference(audioFileName)
+//
+//        val imageUploadTask = imageStorageReference.putFile(selectedImageUri!!)
+//        val audioUploadTask = audioStorageReference.putFile(selectedAudioUri!!)
+//
+//        progressDialog.show()
+//
+//        // Add an OnProgressListener to track the upload progress
+//        imageUploadTask.addOnProgressListener { snapshot ->
+//            val progress = (100.0 * snapshot.bytesTransferred / snapshot.totalByteCount).toInt()
+//            progressDialog.progress = progress
+//        }
+//
+//        // Wait for both tasks to complete
+//        Tasks.whenAll(imageUploadTask, audioUploadTask)
+//            .addOnSuccessListener {
+//                progressDialog.dismiss()
+//
+//                // Get the download URLs for the uploaded files
+//                val imageUrl = imageStorageReference.downloadUrl.toString()
+//                val audioUrl = audioStorageReference.downloadUrl.toString()
+//
+//                // Create an AddSong object with the retrieved data
+//                val addSong = AddSong(songName, artistName, albumName, releaseYear, genre, imageUrl, audioUrl)
+//
+//                // Save the AddSong object to the Firebase database
+//                database.child(songName).setValue(addSong)
+//                    .addOnSuccessListener {
+//                        // Clear UI fields on successful save
+//                        binding.songTitleEditText.text.clear()
+//                        binding.artistNameEditText.text.clear()
+//                        binding.albumNameLabel.text.clear()
+//                        binding.releaseYearEditText.text.clear()
+//                        binding.genreEditText.text.clear()
+//                        Toast.makeText(context, "Successfully saved", Toast.LENGTH_SHORT).show()
+//                    }
+//                    .addOnFailureListener {
+//                        Toast.makeText(context, "Failed to save", Toast.LENGTH_SHORT).show()
+//                    }
+//            }
+//            .addOnFailureListener {
+//                progressDialog.dismiss()
+//                Toast.makeText(context, "Failed to upload files", Toast.LENGTH_SHORT).show()
+//            }
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

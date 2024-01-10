@@ -42,8 +42,8 @@ class Search : Fragment(R.layout.fragment_search) {
 
         binding.selectSearchSongs.setHasFixedSize(true)
         binding.selectSearchSongs.layoutManager = LinearLayoutManager(requireContext())
-        addDataToList()
-        adapter = MusicAdapter(musicList)
+        val mainactivity = activity as MainActivity
+        adapter = MusicAdapter(requireContext(),mainactivity,musicList)
         binding.selectSearchSongs.adapter = adapter
         binding.searchSongs.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -56,12 +56,12 @@ class Search : Fragment(R.layout.fragment_search) {
             }
         })
 
-       // getMusicData()
+        getMusicData()
 
     }
 
     private fun getMusicData() {
-        dbRef = FirebaseDatabase.getInstance().getReference("songs")
+        dbRef = FirebaseDatabase.getInstance().getReference("Music")
 
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -84,19 +84,15 @@ class Search : Fragment(R.layout.fragment_search) {
             }
         })
     }
-    private fun addDataToList() {
-        musicList.add(Music("Java", "Prova","Prova", true,"https://firebasestorage.googleapis.com/v0/b/git-hubmusicapp.appspot.com/o/images%2F2024_01_02_20_22_32?alt=media&token=3fb18b6e-c540-4762-9cea-e029ecfcdd8a"))
-       musicList.add(Music("Muxi", "Prova","Prova",false, null, R.drawable.illustration))
-        musicList.add(Music("Test", "Prova","Prova",false, null, R.drawable.home_icon))
-    }
+
     private fun filterList(query: String?) {
         if (query != null) {
             val filteredList = ArrayList<Music>()
             for (i in musicList) {
-                if (i.songTitle.lowercase(Locale.ROOT).contains(query)) {
+                if (i.songtitle.lowercase(Locale.ROOT).contains(query)) {
                     filteredList.add(i)
                 }
-                else  if (i.songTitle.uppercase(Locale.ROOT).contains(query)) {
+                else  if (i.songtitle.uppercase(Locale.ROOT).contains(query)) {
                     filteredList.add(i)
                 }
             }

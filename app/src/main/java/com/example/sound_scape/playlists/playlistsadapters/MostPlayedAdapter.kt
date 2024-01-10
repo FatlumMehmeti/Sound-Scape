@@ -42,8 +42,7 @@ class MostPlayedAdapter(private var musicList: ArrayList<Music>) :
     class ViewHolder(private val binding: FavoriteViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(currentMusic: Music, listener: OnItemClickListener?) {
-            binding.songNameFV.text = currentMusic.albumName
-            if (currentMusic.isRemote) {
+            binding.songNameFV.text = currentMusic.albumname
                 // Load from remote URL
                 Picasso.get()
                     .load(currentMusic.imageUrl)
@@ -51,15 +50,7 @@ class MostPlayedAdapter(private var musicList: ArrayList<Music>) :
                     .centerInside()
                     .placeholder(R.drawable.music_note_icon)
                     .into(binding.songImgFV)
-            } else {
-                // Load from drawable resource
-                Picasso.get()
-                    .load(currentMusic.imageUrl)
-                    .fit()
-                    .centerInside()
-                    .placeholder(R.drawable.music_note_icon) // Optional placeholder image
-                    .into(binding.songImgFV)
-            }
+
 
             binding.root.setOnClickListener {
                 listener?.onItemClick(adapterPosition)

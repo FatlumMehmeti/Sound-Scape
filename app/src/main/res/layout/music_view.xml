@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/songfragmenti"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+     style="@style/Music"
     android:padding="2dp"
     android:layout_marginBottom="5dp">
 <com.google.android.material.imageview.ShapeableImageView
@@ -17,7 +18,7 @@
         android:layout_height="30dp"
         android:text="@string/song_name"
         android:layout_toEndOf="@+id/imageMV"
-        android:layout_toStartOf="@id/songDuration"
+        android:layout_toStartOf="@+id/playsong"
         android:textColor="@color/black"
         android:layout_marginStart="5dp"/>
     <TextView
@@ -26,18 +27,18 @@
         android:layout_height="20dp"
         android:text="@string/album_name"
         android:layout_toEndOf="@+id/imageMV"
-        android:layout_toStartOf="@id/songDuration"
+        android:layout_toStartOf="@id/playsong"
         android:textColor="@color/black"
         android:layout_marginStart="5dp"
         android:layout_marginTop="30dp"/>
-    <TextView
-        android:id="@+id/songDuration"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/playsong"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:text="@string/start_Tv"
+        android:background="@drawable/play_icon"
         android:layout_alignParentEnd="true"
         android:textColor="@color/black"
         android:gravity="center"
-        android:layout_marginHorizontal="5dp"
-        />
+        android:layout_marginHorizontal="5dp"/>
+
 </RelativeLayout>

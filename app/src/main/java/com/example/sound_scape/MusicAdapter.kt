@@ -1,18 +1,26 @@
 package com.example.sound_scape
 
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sound_scape.databinding.MusicViewBinding
+import com.example.sound_scape.player.MusicView
 import com.squareup.picasso.Picasso
 
-class MusicAdapter(private var musicList: ArrayList<Music>) :
+class MusicAdapter(thisContext: Context, mainactivity: MainActivity, private var musicList: ArrayList<Music>) :
     RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
 
     private var mListener: OnItemClickListener? = null
+    val mainactivity = mainactivity
+    val thisContext = thisContext
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int, music: Music)
     }
 
     fun setOnItemClickListener(clickListener: OnItemClickListener) {
@@ -21,7 +29,7 @@ class MusicAdapter(private var musicList: ArrayList<Music>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = MusicViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(musicList,thisContext,mainactivity,binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -32,37 +40,80 @@ class MusicAdapter(private var musicList: ArrayList<Music>) :
     override fun getItemCount(): Int {
         return musicList.size
     }
+
     fun setFilteredList(mList: ArrayList<Music>) {
         this.musicList = mList
         notifyDataSetChanged()
     }
 
-    class ViewHolder(private val binding: MusicViewBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(musicList : ArrayList<Music>,thisContext: Context,mainactivity: MainActivity,private val binding: MusicViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+
+        val musicList = musicList
+        val mainactivity = mainactivity
+        val thisContext = thisContext
 
         fun bind(currentMusic: Music, listener: OnItemClickListener?) {
-            binding.songNameMV.text = currentMusic.songTitle
-            binding.songAlbumMV.text = currentMusic.albumName
-            if (currentMusic.isRemote) {
-                // Load from remote URL
+            binding.songNameMV.text = currentMusic.songtitle
+            binding.songAlbumMV.text = currentMusic.albumname
+
+            // Load image from Firebase Storage URL
+            // Load image from Firebase Realtime Database URL
+            if (!currentMusic.imageUrl.isNullOrBlank()) {
                 Picasso.get()
-                    .load(currentMusic.imageUrl)
+                    .load(currentMusic.imageUrl) // Firebase Realtime Database URL
                     .fit()
                     .centerInside()
                     .placeholder(R.drawable.music_note_icon)
                     .into(binding.imageMV)
             } else {
-                // Load from drawable resource
                 Picasso.get()
-                    .load(currentMusic.imageUrl)
+                    .load(R.drawable.music_note_icon)
                     .fit()
                     .centerInside()
-                    .placeholder(R.drawable.music_note_icon) // Optional placeholder image
+                    .placeholder(R.drawable.music_note_icon)
                     .into(binding.imageMV)
             }
-
-            binding.root.setOnClickListener {
-                listener?.onItemClick(adapterPosition)
-            }
+                binding.songfragmenti.setOnClickListener{
+                    listener?.onItemClick(adapterPosition, currentMusic)
+                    mainactivity.replaceFragment(MusicView(musicList))
+                    Log.d("","po preket ")
+                }
+//            binding.root.setOnClickListener {
+//                listener?.onItemClick(adapterPosition, currentMusic)
+//            }
         }
+
+//    class ViewHolder(private val binding: MusicViewBinding) : RecyclerView.ViewHolder(binding.root) {
+//
+//        fun bind(currentMusic: Music, listener: OnItemClickListener?) {
+//            binding.songNameMV.text = currentMusic.songtitle
+//            binding.songAlbumMV.text = currentMusic.albumname
+//
+//            if (!currentMusic.imageUrl.isNullOrBlank()) {
+//                Picasso.get()
+//                    .load(currentMusic.imageUrl)
+//                    .fit()
+//                    .centerInside()
+//                    .placeholder(R.drawable.music_note_icon)
+//                    .into(binding.imageMV)
+//            } else {
+//                // Load a placeholder image if imageUrl is empty or null
+//                Picasso.get()
+//                    .load(R.drawable.music_note_icon)
+//                    .fit()
+//                    .centerInside()
+//                    .placeholder(R.drawable.music_note_icon)
+//                    .into(binding.imageMV)
+//            }
+//
+//
+//
+//            binding.root.setOnClickListener {
+//                listener?.onItemClick(adapterPosition)
+//            }
+//        }
+//    }
     }
 }

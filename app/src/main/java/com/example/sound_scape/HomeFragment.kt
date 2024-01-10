@@ -26,7 +26,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -37,9 +37,8 @@ class HomeFragment : Fragment() {
             _binding!!.musicRV.layoutManager = LinearLayoutManager(requireContext())
 
             musicList = arrayListOf()
-            addDataToList()
-
-            musicAdapter = MusicAdapter(musicList)
+            val mainActivity=activity as MainActivity
+            musicAdapter = MusicAdapter(requireContext(),mainActivity,musicList)
             _binding!!.musicRV.adapter = musicAdapter
 
             // RecyclerView setup
@@ -48,36 +47,19 @@ class HomeFragment : Fragment() {
             // Retrieve and display total song count
             _binding!!.TotalSongs.text = "Total Songs: ${musicList.size}"
 
-//            getMusicData()
+            getMusicData()
         }
-//        binding.musicRV.setItemViewCacheSize(13)
-//        binding.musicRV.layoutManager = LinearLayoutManager(requireContext())
-//
-//        // Initialize musicList before creating the adapter
-//        musicList = arrayListOf()
-//
-//        musicAdapter = MusicAdapter(musicList)
-//        binding.musicRV.adapter = musicAdapter
-//
-//        // RecyclerView setup
-//        binding.musicRV.setHasFixedSize(true)
-//
-//        // Retrieve and display total song count
-//        binding.TotalSongs.text = "Total Songs: ${musicList.size}"
-//
-//        getMusicData()
-    }
-    private fun addDataToList() {
-        musicList.add(Music("Java", "Prova","Prova", true,"https://firebasestorage.googleapis.com/v0/b/git-hubmusicapp.appspot.com/o/images%2F2024_01_02_20_22_32?alt=media&token=3fb18b6e-c540-4762-9cea-e029ecfcdd8a" ))
-        musicList.add(Music("Muxi", "Prova","Prova",false, null, R.drawable.illustration))
-        musicList.add(Music("Test", "Prova","Prova",false, null, R.drawable.home_icon))
     }
     private fun getMusicData() {
-        dbRef = FirebaseDatabase.getInstance().getReference("songs")
+        dbRef = FirebaseDatabase.getInstance().getReference("Music")
 
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 musicList.clear()
+
+                // Check if the fragment is still attached
+                if (!isAdded) return
+
                 if (snapshot.exists()) {
                     for (musicSnap in snapshot.children) {
                         val musicData = musicSnap.getValue(Music::class.java)
@@ -97,6 +79,37 @@ class HomeFragment : Fragment() {
             }
         })
     }
+//    private fun getMusicData() {
+//        dbRef = FirebaseDatabase.getInstance().getReference("Music")
+//
+//        dbRef.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                musicList.clear()
+//
+//                // Check if the fragment is still attached
+//                if (!isAdded) return
+//
+//                if (snapshot.exists()) {
+//                    for (musicSnap in snapshot.children) {
+//                        val musicData = musicSnap.getValue(Music::class.java)
+//                        musicList.add(musicData!!)
+//                    }
+//
+//                    // Notify the adapter about the data change
+//                    musicAdapter.notifyDataSetChanged()
+//
+//                    // Update the total song count
+//                    binding.TotalSongs.text = "Total Songs: ${musicList.size}"
+//                }
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                // Handle onCancelled event if needed
+//            }
+//        })
+//    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
