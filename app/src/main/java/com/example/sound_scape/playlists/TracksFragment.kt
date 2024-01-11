@@ -38,28 +38,17 @@ class TracksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // RecyclerView setup
         binding.favRec.setHasFixedSize(true)
 
-        // Initialize musicList before creating the adapter
         musicList = arrayListOf()
-//        addDataToList()
-        // Set up GridLayoutManager
         binding.favRec.layoutManager = GridLayoutManager(requireContext(), 4)
 
-        // Initialize the adapter
         musicAdapter = TracksAdapter(musicList)
         binding.favRec.adapter = musicAdapter
 
-        // Retrieve and display total song count
-        getMusicData()
-    }
-//    private fun addDataToList() {
-//        musicList.add(Music("Java", "Prova","Prova", true,"https://firebasestorage.googleapis.com/v0/b/git-hubmusicapp.appspot.com/o/images%2F2024_01_02_20_22_32?alt=media&token=3fb18b6e-c540-4762-9cea-e029ecfcdd8a" ))
-//        musicList.add(Music("Muxi", "Prova","Prova",false, null, R.drawable.illustration))
-//        musicList.add(Music("Test", "Prova","Prova",false, null, R.drawable.home_icon))
-//    }
-    private fun getMusicData() {
+        addedSongsData()    }
+
+    private fun addedSongsData() {
         dbRef = FirebaseDatabase.getInstance().getReference("ADDED SONGS")
 
         dbRef.addValueEventListener(object : ValueEventListener {
@@ -70,8 +59,6 @@ class TracksFragment : Fragment() {
                         val musicData = musicSnap.getValue(AddSong::class.java)
                         musicList.add(musicData!!)
                     }
-
-                    // Notify the adapter about the data change
                     musicAdapter.notifyDataSetChanged()
                 }
             }
@@ -80,10 +67,8 @@ class TracksFragment : Fragment() {
             }
         })
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        // Clean up the binding instance
         _binding = null
     }
 

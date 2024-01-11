@@ -40,55 +40,42 @@ class MostPlayedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // RecyclerView setup
         binding.favRec.setHasFixedSize(true)
 
-        // Initialize musicList before creating the adapter
         musicList = arrayListOf()
-        // Set up GridLayoutManager
         binding.favRec.layoutManager = GridLayoutManager(requireContext(), 4)
 
-        // Initialize the adapter
         val mainActivity=activity as MainActivity
         musicAdapter = MostPlayedAdapter(requireContext(),mainActivity,musicList)
         _binding!!.favRec.adapter = musicAdapter
 
-        // Retrieve and display total song count
-        getMusicData()
+        getMostplayedData()
     }
 
-private fun getMusicData() {
+private fun getMostplayedData() {
     dbRef = FirebaseDatabase.getInstance().getReference("Music")
 
     dbRef.addValueEventListener(object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             musicList.clear()
 
-            // Check if the fragment is still attached
             if (!isAdded) return
-
             if (snapshot.exists()) {
                 for (musicSnap in snapshot.children) {
                     val musicData = musicSnap.getValue(Music::class.java)
                     musicList.add(musicData!!)
                 }
-
-                // Notify the adapter about the data change
                 musicAdapter.notifyDataSetChanged()
-
-                // Update the total song count
             }
         }
 
         override fun onCancelled(error: DatabaseError) {
-            // Handle onCancelled event if needed
         }
     })
 }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Clean up the binding instance
         _binding = null
     }
 
