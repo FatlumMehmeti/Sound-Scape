@@ -75,13 +75,13 @@
             android:name=".activity.change.ResetPasswordActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".activity.recommendation.SongsRecommendationsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.recommendation.GenresRecommendationsActivity"
-            android:exported="false" />
-        <activity
+<!--        <activity-->
+<!--            android:name=".activity.recommendation.SongsRecommendationsActivity"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".activity.recommendation.GenresRecommendationsActivity"-->
+<!--            android:exported="false" />-->
+       <activity
             android:name=".activity.authentication.SignUpActivity"
             android:exported="false" />
         <activity
