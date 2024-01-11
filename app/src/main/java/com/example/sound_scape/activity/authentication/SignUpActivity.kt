@@ -20,6 +20,8 @@ class SignUpActivity : AppCompatActivity(){
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var auth : FirebaseAuth
 
+    val user = FirebaseAuth.getInstance().currentUser
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
@@ -132,10 +134,8 @@ class SignUpActivity : AppCompatActivity(){
                     val userId = FirebaseAuth.getInstance().currentUser?.uid
                     val user = User(userId, email, username)
 
-                    // Save the user data to the database
                     saveUserDataToDatabase(userId, user)
 
-                    // Continue with the rest of your code
                     val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
                     val editor = sharedPreferences.edit()
                     editor.putBoolean("isNewUser", true)
@@ -154,7 +154,6 @@ class SignUpActivity : AppCompatActivity(){
             val databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
             databaseReference.setValue(user)
         } else {
-            // Handle the case where userId is null
             Toast.makeText(this, "Error saving user data to the database", Toast.LENGTH_SHORT).show()
         }
     }

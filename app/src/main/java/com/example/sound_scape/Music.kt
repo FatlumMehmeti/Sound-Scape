@@ -12,5 +12,3 @@ data class Music(
     var audioUrl: String = ""
 
     ) {}
-//data class Music(val id:String? = null,val title: String? = null,val album:String? = null,val artist:String? = null,val path:String? = null,
-//                 val artUri:String? = null){}

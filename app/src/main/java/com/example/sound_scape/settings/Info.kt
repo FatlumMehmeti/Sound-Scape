@@ -1,10 +1,10 @@
 package com.example.teste_per_app.settings
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.sound_scape.MainActivity
 import com.example.sound_scape.R
 import com.example.sound_scape.databinding.InfoBinding
@@ -35,7 +35,6 @@ class Info : Fragment(R.layout.info) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Clean up the binding instance
         _binding = null
     }
 }

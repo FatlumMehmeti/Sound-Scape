@@ -65,15 +65,7 @@ class Settings : Fragment(R.layout.fragment_settings) {
             mainactivity.restartActivity()
 
         }
-        //notificaton
-//        binding.notifications2.setOnCheckedChangeListener { _, isChecked ->
-//                // Handle the switch state change, e.g., perform an action based on isChecked
-//                if (isChecked) {
-//                    // Switch is ON
-//                } else {
-//                    // Switch is OFF
-//                }}
-        //Security
+
         binding.apply {
             security.setOnClickListener { mainactivity.replaceFragment(Security())}
             addSong.setOnClickListener { mainactivity.replaceFragment(Add_song()) }

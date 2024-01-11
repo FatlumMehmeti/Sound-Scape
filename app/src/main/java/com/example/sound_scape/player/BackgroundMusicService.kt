@@ -5,7 +5,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.IBinder
 import android.util.Log
-import com.example.sound_scape.R
 
 
 class BackgroundMusicService : Service() {
@@ -21,7 +20,6 @@ class BackgroundMusicService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.d("mylog", "Starting playing")
-        //mediaPlayer = MediaPlayer.create(this, )
         mediaPlayer!!.start()
         return super.onStartCommand(intent, flags, startId)
     }

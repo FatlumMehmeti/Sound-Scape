@@ -4,10 +4,10 @@ package com.example.sound_scape
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.sound_scape.databinding.ActivityMainBinding
@@ -16,11 +16,9 @@ import com.example.teste_per_app.settings.Settings
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var MusicListMA: ArrayList<Music>
-    //lateinit var mainactivity : MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       // setTheme(R.style.Sound_Scape)
         requestRuntimePermission()
         binding =ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -50,9 +48,7 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
             return true
-        }
-        //android 13 permission request
-        else if(Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU){
+        } else if(Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU){
             if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_MEDIA_AUDIO), 13)
@@ -68,7 +64,6 @@ class MainActivity : AppCompatActivity() {
         if(requestCode == 13){
             if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this, "Permission Granted",Toast.LENGTH_SHORT).show()
-//                initializeLayout()
 
             }
             else
