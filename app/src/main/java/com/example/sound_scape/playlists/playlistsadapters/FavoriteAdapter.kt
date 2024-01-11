@@ -36,7 +36,7 @@ class FavoriteAdapter(thisContext: Context, mainactivity: MainActivity, private 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentEmp = musicList[position]
-        if(currentEmp.favorite == true) holder.bind(position,currentEmp, mListener)
+        holder.bind(position,currentEmp, mListener)
     }
 
     override fun getItemCount(): Int {
@@ -57,14 +57,14 @@ class FavoriteAdapter(thisContext: Context, mainactivity: MainActivity, private 
         val thisContext = thisContext
 
         fun bind(position:Int,currentMusic: Music, listener: OnItemClickListener?) {
-
+            if (currentMusic.favorite == true) {
                 binding.songNameFV.text = currentMusic.songtitle
 
                 // Load image from Firebase Storage URL
                 // Load image from Firebase Realtime Database URL
                 if (!currentMusic.imageUrl.isNullOrBlank()) {
                     Picasso.get()
-                        .load(currentMusic.imageUrl) // Firebase Realtime Database URL
+                        .load(currentMusic.imageUrl)
                         .fit()
                         .centerInside()
                         .placeholder(R.drawable.music_note_icon)
@@ -82,7 +82,7 @@ class FavoriteAdapter(thisContext: Context, mainactivity: MainActivity, private 
                     mainactivity.replaceFragment(MusicView(musicList))
                     Log.d("", "po preket ")
                 }
+            }
         }
-
     }
 }

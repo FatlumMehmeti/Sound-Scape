@@ -35,7 +35,7 @@ class MostPlayedAdapter(thisContext: Context, mainactivity: MainActivity, privat
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentEmp = musicList[position]
-        if(currentEmp.songPlayed>1) holder.bind(position,currentEmp, mListener)
+        holder.bind(position,currentEmp, mListener)
     }
 
     override fun getItemCount(): Int {
@@ -56,7 +56,8 @@ class MostPlayedAdapter(thisContext: Context, mainactivity: MainActivity, privat
         val thisContext = thisContext
 
         fun bind(position:Int,currentMusic: Music, listener: OnItemClickListener?) {
-            binding.songNameFV.text = currentMusic.songtitle
+            if(currentMusic.songPlayed>1){
+                binding.songNameFV.text = currentMusic.songtitle
 
             // Load image from Firebase Storage URL
             // Load image from Firebase Realtime Database URL
@@ -81,7 +82,7 @@ class MostPlayedAdapter(thisContext: Context, mainactivity: MainActivity, privat
                 Log.d("","po preket ")
             }
 
-        }
+        }}
 
     }
 }

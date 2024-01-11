@@ -45,7 +45,6 @@ class MostPlayedFragment : Fragment() {
 
         // Initialize musicList before creating the adapter
         musicList = arrayListOf()
-//        addDataToList()
         // Set up GridLayoutManager
         binding.favRec.layoutManager = GridLayoutManager(requireContext(), 4)
 
@@ -55,13 +54,9 @@ class MostPlayedFragment : Fragment() {
         _binding!!.favRec.adapter = musicAdapter
 
         // Retrieve and display total song count
-        //getMusicData()
+        getMusicData()
     }
-//    private fun addDataToList() {
-//        musicList.add(Music("Java", "Prova","Prova", true,"https://firebasestorage.googleapis.com/v0/b/git-hubmusicapp.appspot.com/o/images%2F2024_01_02_20_22_32?alt=media&token=3fb18b6e-c540-4762-9cea-e029ecfcdd8a" ))
-//        musicList.add(Music("Muxi", "Prova","Prova",false, null, R.drawable.illustration))
-//        musicList.add(Music("Test", "Prova","Prova",false, null, R.drawable.home_icon))
-//    }
+
 private fun getMusicData() {
     dbRef = FirebaseDatabase.getInstance().getReference("Music")
 
