@@ -1,10 +1,10 @@
 package com.example.sound_scape
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.sound_scape.databinding.FragmentPlaylistsBinding
 import com.example.teste_per_app.playlists.FavoriteFragment
 import com.example.teste_per_app.playlists.MostPlayedFragment
@@ -43,17 +43,15 @@ class Playlists : Fragment(R.layout.fragment_playlists) {
 
     }
     private fun navigateToFragment(fragment: Fragment) {
-        // Replace the current fragment with the specified fragment
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.play_fragments, fragment)
-        transaction.addToBackStack(null) // Optional: Add to back stack for fragment navigation
+        transaction.addToBackStack(null)
         transaction.commit()
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Clean up the binding instance
         _binding = null
     }
 }

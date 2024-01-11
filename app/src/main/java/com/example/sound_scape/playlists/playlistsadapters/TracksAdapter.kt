@@ -1,6 +1,5 @@
 package com.example.teste_per_app.playlists.playlistsadapters
 
-import com.example.sound_scape.Music
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -51,7 +50,7 @@ class TracksAdapter(private var musicList: ArrayList<AddSong>) :
                 .placeholder(R.drawable.music_note_icon)
                 .into(binding.songImgFV)
 //            if (currentMusic.isRemote) {
-//                // Load from remote URL
+//
 //                Picasso.get()
 //                    .load(currentMusic.imageUrl)
 //                    .fit()
@@ -59,12 +58,12 @@ class TracksAdapter(private var musicList: ArrayList<AddSong>) :
 //                    .placeholder(R.drawable.music_note_icon)
 //                    .into(binding.songImgFV)
 //            } else {
-//                // Load from drawable resource
+//
 //                Picasso.get()
 //                    .load(currentMusic.imageUrl)
 //                    .fit()
 //                    .centerInside()
-//                    .placeholder(R.drawable.music_note_icon) // Optional placeholder image
+//                    .placeholder(R.drawable.music_note_icon)
 //                    .into(binding.songImgFV)
 //            }
 

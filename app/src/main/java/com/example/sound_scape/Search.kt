@@ -1,11 +1,11 @@
 package com.example.sound_scape
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sound_scape.databinding.FragmentSearchBinding
 import com.google.firebase.database.DataSnapshot
@@ -33,7 +33,6 @@ class Search : Fragment(R.layout.fragment_search) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -72,15 +71,12 @@ class Search : Fragment(R.layout.fragment_search) {
                         musicList.add(musicData!!)
                     }
 
-                    // Notify the adapter about the data change
                     adapter.notifyDataSetChanged()
 
-                    // Update the total song count
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Handle onCancelled event if needed
             }
         })
     }
@@ -106,7 +102,6 @@ class Search : Fragment(R.layout.fragment_search) {
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        // Clean up the binding instance
         _binding = null
     }
 

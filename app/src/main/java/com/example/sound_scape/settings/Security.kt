@@ -49,7 +49,6 @@ class Security : Fragment(R.layout.fragment_security) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Clean up the binding instance
         _binding = null
     }
 

@@ -1,12 +1,9 @@
 package com.example.sound_scape
 
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sound_scape.databinding.MusicViewBinding
 import com.example.sound_scape.player.MusicView
@@ -58,11 +55,10 @@ class MusicAdapter(thisContext: Context, mainactivity: MainActivity, private var
             binding.songNameMV.text = currentMusic.songtitle
             binding.songAlbumMV.text = currentMusic.albumname
 
-            // Load image from Firebase Storage URL
-            // Load image from Firebase Realtime Database URL
+
             if (!currentMusic.imageUrl.isNullOrBlank()) {
                 Picasso.get()
-                    .load(currentMusic.imageUrl) // Firebase Realtime Database URL
+                    .load(currentMusic.imageUrl)
                     .fit()
                     .centerInside()
                     .placeholder(R.drawable.music_note_icon)

@@ -21,13 +21,11 @@ class ChangeUsernameActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // Set the current username in the EditText and disable editing
         binding.oldName.setText(auth.currentUser?.displayName)
         binding.oldName.isEnabled = false
 
 
         binding.getBack.setOnClickListener {
-            // Set the flag to indicate the source
             val intent = Intent(this, EditAccountActivity::class.java)
             intent.putExtra("fromChangeUsername", true)
             startActivity(intent)
@@ -39,7 +37,6 @@ class ChangeUsernameActivity : AppCompatActivity() {
             if (newUsername.isNotEmpty()) {
                 val user = auth.currentUser
 
-                // Update the user's display name in Firebase Authentication
                 val profileUpdates = UserProfileChangeRequest.Builder()
                     .setDisplayName(newUsername)
                     .build()
@@ -47,16 +44,12 @@ class ChangeUsernameActivity : AppCompatActivity() {
                 user?.updateProfile(profileUpdates)
                     ?.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            // Username updated successfully in Firebase Authentication
                             startActivity(Intent(this, EditAccountActivity::class.java))
                         } else {
-                            // Handle the error
                             Log.e("ChangeUsername", "Failed to update username", task.exception)
-                            // You might want to show a toast or log the error
                         }
                     }
             } else {
-                // Show an error message or handle the case when newUsername is empty
             }
         }
     }

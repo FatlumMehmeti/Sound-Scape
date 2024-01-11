@@ -2,7 +2,6 @@ package com.example.sound_scape.player
 
 import android.content.Intent
 import android.media.MediaPlayer
-import android.media.MediaPlayer.OnPreparedListener
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -10,9 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.example.sound_scape.HomeFragment
 import com.example.sound_scape.MainActivity
 import com.example.sound_scape.Music
@@ -25,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
-import kotlin.properties.Delegates
 
 class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player), MusicAdapter.OnItemClickListener {
 
@@ -59,7 +55,6 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
         super.onViewCreated(view, savedInstanceState)
 
         view2 = view
-        // Initialize mediaPlayer
         mediaPlayer = MediaPlayer()
 
         songTitle = view.findViewById(R.id.song_title)
@@ -80,7 +75,6 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
         val intent = Intent(requireContext(), BackgroundMusicService::class.java)
         mainactivity.startService(intent)
 
-       // var originalSongList = songList.toList()
         playPauseButton = view.findViewById(R.id.pause_play)
         val nextButton: ImageView = view.findViewById(R.id.next)
         val previousButton: ImageView = view.findViewById(R.id.previous)
@@ -91,7 +85,6 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
         playPauseButton.setOnClickListener {
             togglePlayback()
         }
-        // Check and update play/pause button based on MediaPlayer state
         if (getMediaPlayerInstance().isPlaying) {
             playPauseButton.setImageResource(R.drawable.pause_button)
         } else {
@@ -116,19 +109,16 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
         }
 
         shuffleButton.setOnClickListener {
-            // Implement shuffle functionality
             toggleShuffle()
         }
 
         repeatButton.setOnClickListener {
-            // Implement repeat functionality
             toggleRepeat()
         }
 
         setupMediaPlayer()
         setupSeekBar()
 
-        // Check if songList is not empty before attempting to play the first song
         if (songList.isNotEmpty()) {
             val firstSong = songList[0]
             playSong(firstSong)
@@ -174,7 +164,7 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
                     seekBar.value = (currentPosition.toFloat() / mediaPlayer.duration.toFloat()) * 100
                     currentTime.text = formatTime(currentPosition)
                 }
-                handler.postDelayed(this, 1000) // Update every second
+                handler.postDelayed(this, 1000)
             }
         })
 
@@ -240,7 +230,6 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Handle onCancelled event if needed
             }
         })
 
@@ -256,11 +245,9 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
                     .placeholder(R.drawable.music_note_icon)
                     .into(imgIcon)
             }.addOnFailureListener {
-                // Handle failure to load image
                 imgIcon.setImageResource(R.drawable.music_note_icon)
             }
         } else {
-            // Load a placeholder image if imageUrl is empty or null
             imgIcon.setImageResource(R.drawable.music_note_icon)
         }
 
@@ -278,41 +265,31 @@ class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player),
 
     private fun toggleShuffle() {
         val shuffleButton: ImageView =  view2.findViewById(R.id.shuffle)
-        isShuffleEnabled = !isShuffleEnabled // Toggle shuffle status
+        isShuffleEnabled = !isShuffleEnabled
 
         if (isShuffleEnabled) {
-            // Change the shuffle button icon to "enabled"
             shuffleButton.setImageResource(R.drawable.shuffle_on)
 
-            // Shuffle the song list
             songList.shuffle()
         } else {
-            // Change the shuffle button icon to "disabled"
             shuffleButton.setImageResource(R.drawable.shuffle_icon)
 
-            // Revert to the original song list order
             songList = ArrayList(originalSongList)
         }
     }
 
     private fun toggleRepeat() {
-        // Toggle repeat status and update UI accordingly
         val repeatButton: ImageView =  view2.findViewById(R.id.repeat)
         isRepeatEnabled = !isRepeatEnabled
 
-        // Update UI based on repeat status
         if (isRepeatEnabled) {
-            // Change the repeat button icon to "enabled"
             repeatButton.setImageResource(R.drawable.repeat_on)
         } else {
-            // Change the repeat button icon to "disabled"
             repeatButton.setImageResource(R.drawable.repeat_icon)
         }
     }
 
-    // Implement the onItemClick method from MusicAdapter.OnItemClickListener
     override fun onItemClick(position: Int, music: Music) {
-        // Handle the logic for playing the selected music directly in this activity
         mediaPlayer.reset()
         mediaPlayer = MediaPlayer.create(requireContext(), Uri.parse(music.audioUrl))
         mediaPlayer.start()

@@ -2,10 +2,10 @@ package com.example.sound_scape
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sound_scape.databinding.FragmentHomeBinding
 import com.google.firebase.database.DataSnapshot
@@ -41,10 +41,8 @@ class HomeFragment : Fragment() {
             musicAdapter = MusicAdapter(requireContext(),mainActivity,musicList)
             _binding!!.musicRV.adapter = musicAdapter
 
-            // RecyclerView setup
             _binding!!.musicRV.setHasFixedSize(true)
 
-            // Retrieve and display total song count
             _binding!!.TotalSongs.text = "Total Songs: ${musicList.size}"
 
             getMusicData()
@@ -57,7 +55,6 @@ class HomeFragment : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 musicList.clear()
 
-                // Check if the fragment is still attached
                 if (!isAdded) return
 
                 if (snapshot.exists()) {
@@ -76,16 +73,13 @@ class HomeFragment : Fragment() {
                         musicList.add(newMusic)
                     }
 
-                    // Notify the adapter about the data change
                     musicAdapter.notifyDataSetChanged()
 
-                    // Update the total song count
                     binding.TotalSongs.text = "Total Songs: ${musicList.size}"
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Handle onCancelled event if needed
             }
         })
     }
@@ -95,7 +89,6 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Clean up the binding instance
         _binding = null
     }
 }
