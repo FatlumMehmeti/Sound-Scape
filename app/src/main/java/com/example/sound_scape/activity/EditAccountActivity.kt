@@ -15,6 +15,9 @@ class EditAccountActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditAccountBinding
     private lateinit var auth: FirebaseAuth
 
+    val user = FirebaseAuth.getInstance().currentUser
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditAccountBinding.inflate(layoutInflater)
@@ -59,5 +62,8 @@ class EditAccountActivity : AppCompatActivity() {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
             Log.e("EditAccountActivity", "User not authenticated")
         }
+
     }
+
+
 }

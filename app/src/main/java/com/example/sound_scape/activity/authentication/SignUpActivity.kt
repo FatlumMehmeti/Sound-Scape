@@ -20,6 +20,8 @@ class SignUpActivity : AppCompatActivity(){
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var auth : FirebaseAuth
 
+    val user = FirebaseAuth.getInstance().currentUser
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
