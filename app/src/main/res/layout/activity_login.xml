@@ -33,7 +33,7 @@
         android:drawableStart="@drawable/ic_circle_account"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="@string/username_email"
+        android:hint="@string/email"
         android:inputType="text"
         android:paddingStart="20dp"
         android:paddingTop="10dp"
