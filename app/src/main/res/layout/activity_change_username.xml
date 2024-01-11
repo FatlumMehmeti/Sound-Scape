@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.change.ChangeUsernameActivity">
+
+    <TextView
+        android:id="@+id/resetUsername"
+        style="@style/Title"
+        android:layout_width="357dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/reset_your_username"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextSizeCheck"/>
+
+
+    <ImageView
+        android:id="@+id/getBack"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/return_back_arrow"
+        android:padding="14dp" />
+
+
+    <EditText
+        android:id="@+id/newName"
+        android:layout_width="357dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/resetUsername"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="179dp"
+        android:layout_marginEnd="28dp"
+        android:drawableStart="@drawable/ic_circle_account"
+        android:drawablePadding="5dp"
+        android:hint="@string/new_username"
+        android:inputType="text"
+        android:textColorHint="@color/grey"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resetUsername"
+        tools:ignore="Autofill,TextFields" />
+
+    <EditText
+        android:id="@+id/oldName"
+        android:layout_width="357dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="28dp"
+        android:drawableStart="@drawable/ic_circle_account"
+        android:drawablePadding="5dp"
+        android:hint="@string/username"
+        android:inputType="text"
+        android:textColorHint="@color/grey"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="Autofill,TextFields"
+        android:enabled="false" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/saveBtn"
+        style="@style/ButtonWhite"
+        android:layout_width="385dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/newName"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="367dp"
+        android:layout_marginEnd="13dp"
+        android:backgroundTint="@color/primary_color"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/oldName" />
+
+</RelativeLayout>

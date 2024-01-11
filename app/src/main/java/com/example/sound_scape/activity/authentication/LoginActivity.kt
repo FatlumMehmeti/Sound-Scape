@@ -1,25 +1,30 @@
-package com.example.teste_per_app.activity.authentication
+package com.example.sound_scape.activity.authentication
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.sound_scape.MainActivity
 import com.example.sound_scape.R
+import com.example.sound_scape.activity.change.ResetPasswordActivity
 import com.example.sound_scape.databinding.ActivityLoginBinding
-import com.example.teste_per_app.activity.password.ResetPasswordActivity
-import com.example.teste_per_app.activity.recommendation.GenresRecommendationsActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.jakewharton.rxbinding2.widget.RxTextView
 
 @SuppressLint("CheckResult")
 class LoginActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        auth = FirebaseAuth.getInstance()
 
         binding.loginBtn.isEnabled = false
         binding.loginBtn.backgroundTintList = ContextCompat.getColorStateList(this, R.color.grey)
@@ -67,7 +72,9 @@ class LoginActivity : AppCompatActivity(){
         }
 
         binding.loginBtn.setOnClickListener{
-            startActivity(Intent(this, GenresRecommendationsActivity::class.java))
+            val username =binding.inputUsername.text.toString().trim()
+            val password = binding.inputPassword.text.toString().trim()
+            loginUser(username, password)
 
         }
         binding.dontHaveAccount.setOnClickListener{
@@ -86,4 +93,15 @@ class LoginActivity : AppCompatActivity(){
             binding.inputPassword.error = if (isNotValid) "$text cannot be empty!" else null
     }
 
+    private fun loginUser(username: String, password: String) {
+        auth.signInWithEmailAndPassword(username, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
 }

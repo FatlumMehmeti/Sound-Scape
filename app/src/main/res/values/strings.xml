@@ -108,4 +108,10 @@
     <string name="latin">Latin</string>
     <string name="nasheed">Nasheed</string>
     <string name="finish">finish</string>
+    <string name="change_username">Change Username</string>
+    <string name="change_email">Change email</string>
+    <string name="reset_your_username">Reset your username</string>
+    <string name="new_username">New username</string>
+    <string name="change_your_password">Change your password</string>
+    <string name="hip_hop">Hip Hop</string>
 </resources>

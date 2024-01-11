@@ -41,6 +41,7 @@
                 android:src="@drawable/illustration" />
 
             <TextView
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -115,7 +116,7 @@
                         android:id="@+id/notifications"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/round_back_notifications"
+                        android:background="@drawable/round_back_night_mode"
                         android:padding="12dp"
                         android:src="@drawable/notifications_icon" />
 
@@ -159,7 +160,7 @@
                         android:id="@+id/security1"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/round_back_security"
+                        android:background="@drawable/round_back_add_song"
                         android:padding="12dp"
                         android:src="@drawable/security_icon" />
 
@@ -233,7 +234,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/sound_speed"
-                        android:background="@drawable/round_back_speed"
+                        android:background="@drawable/round_back_add_song"
                         android:padding="12dp"
                         />
 
@@ -312,10 +313,9 @@
                         android:id="@+id/faq1"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/frequently_asked_questions"
-                        android:background="@drawable/round_back_diqka2"
+                        android:background="@drawable/round_back_diqka"
                         android:padding="12dp"
-                        />
+                        android:src="@drawable/frequently_asked_questions" />
 
                     <TextView
                         android:id="@+id/faq2"
@@ -349,7 +349,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/info_icon"
-                        android:background="@drawable/round_back_diqka3"
+                        android:background="@drawable/round_back_diqka"
                         android:padding="12dp"
                         />
 
@@ -397,7 +397,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/exit_to_app"
-                        android:background="@drawable/round_back_diqka4"
+                        android:background="@drawable/round_back_night_mode"
                         android:padding="12dp"
                         />
 

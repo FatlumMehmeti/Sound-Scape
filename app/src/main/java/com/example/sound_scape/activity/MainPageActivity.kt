@@ -1,11 +1,11 @@
-package com.example.teste_per_app.activity
+package com.example.sound_scape.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.sound_scape.activity.authentication.LoginActivity
+import com.example.sound_scape.activity.authentication.SignUpActivity
 import com.example.sound_scape.databinding.ActivityMainPageBinding
-import com.example.teste_per_app.activity.authentication.LoginActivity
-import com.example.teste_per_app.activity.authentication.SignUpActivity
 
 class MainPageActivity : AppCompatActivity(){
     private lateinit var  binding: ActivityMainPageBinding

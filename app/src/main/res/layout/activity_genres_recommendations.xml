@@ -90,7 +90,7 @@
 
         <androidx.cardview.widget.CardView
 
-            android:id="@+id/hipPopCardView"
+            android:id="@+id/hipHopCardView"
             android:layout_width="5dp"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
@@ -108,7 +108,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:text="@string/hip_pop"
+                android:text="@string/hip_hop"
                 android:textSize="24sp" />
         </androidx.cardview.widget.CardView>
 

@@ -2,8 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_purple"
+    android:background="@color/teal"
     android:padding="16dp">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnChangeName"
+        android:layout_width="338dp"
+        android:layout_height="51dp"
+        android:layout_below="@+id/editTextEmail"
+        android:layout_alignStart="@+id/editTextEmail"
+        android:layout_alignEnd="@+id/editTextEmail"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="3dp"
+        android:background="@android:drawable/editbox_background"
+        android:text="@string/change_username" />
 
     <ImageView
         android:id="@+id/imageProfile"
@@ -12,13 +25,20 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/ic_circle_account"
-        android:backgroundTint="@color/purple"
+        android:backgroundTint="@color/white"
         android:clickable="true"
         android:contentDescription="@string/profile_image"
         android:focusable="true"
         android:scaleType="centerCrop" />
 
-    <EditText
+    <ImageView
+        android:id="@+id/getBack"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/return_back_arrow"
+        android:padding="14dp" />
+
+    <TextView
         android:id="@+id/editTextUsername"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -28,36 +48,24 @@
         android:layout_marginEnd="16dp"
         android:background="@android:drawable/editbox_background"
         android:hint="@string/username"
-        android:inputType="text" />
+        android:inputType="text"
+        android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/textViewPassword"
-        android:layout_width="114dp"
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/logOut"
+        android:layout_width="160dp"
         android:layout_height="48dp"
         android:layout_below="@+id/editTextEmail"
         android:layout_alignStart="@+id/editTextEmail"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:drawable/editbox_background"
-        android:text="@string/password"
-        android:padding="10sp"
-        android:textSize="20sp" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnChangePassword"
-        android:layout_width="50dp"
-        android:layout_height="48dp"
-        android:layout_below="@+id/editTextEmail"
         android:layout_alignEnd="@+id/editTextEmail"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="-1dp"
-        android:layout_toEndOf="@+id/textViewPassword"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="110dp"
         android:background="@android:drawable/editbox_background"
-        android:text="@string/change_password" />
+        android:text="@string/logout" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -68,31 +76,13 @@
         android:layout_marginEnd="16dp"
         android:background="@android:drawable/editbox_background"
         android:hint="@string/email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:textSize="18sp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/back_to_login"
-        android:layout_width="125dp"
-        android:layout_height="48dp"
-        android:layout_below="@+id/textViewPassword"
-        android:layout_alignStart="@+id/textViewPassword"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginBottom="60dp"
-        android:text="@string/back" />
+    <FrameLayout
+        android:id="@+id/flFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/log_out"
-        android:layout_width="125dp"
-        android:layout_height="48dp"
-        android:layout_below="@+id/btnChangePassword"
-        android:layout_alignEnd="@+id/btnChangePassword"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="60dp"
-        android:text="@string/logout" />
 
 </RelativeLayout>
