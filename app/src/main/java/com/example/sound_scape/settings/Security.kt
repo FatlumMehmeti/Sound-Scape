@@ -32,6 +32,12 @@ class Security : Fragment(R.layout.fragment_security) {
         binding.getBack.setOnClickListener {
             mainactivity.replaceFragment(Settings())
         }
+        binding.changePasswordButton.setOnClickListener {
+            startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
+        }
+
+
+
 
     }
 
