@@ -1,5 +1,4 @@
 package com.example.sound_scape
-
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import com.squareup.picasso.Picasso
 
 class FavoriteAdapter(thisContext: Context, mainactivity: MainActivity, private var musicList: ArrayList<Music>) :
     RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
-
     private var mListener: OnItemClickListener? = null
     val mainactivity = mainactivity
     val thisContext = thisContext
@@ -25,13 +23,14 @@ class FavoriteAdapter(thisContext: Context, mainactivity: MainActivity, private 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = FavoriteViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(musicList,thisContext,mainactivity,binding)
+        val binding =
+            FavoriteViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(musicList, thisContext, mainactivity, binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentEmp = musicList[position]
-        if(currentEmp.favorite == true) holder.bind(position,currentEmp, mListener)
+        holder.bind(position, currentEmp, mListener)
     }
 
     override fun getItemCount(): Int {
@@ -43,7 +42,12 @@ class FavoriteAdapter(thisContext: Context, mainactivity: MainActivity, private 
         notifyDataSetChanged()
     }
 
-    class ViewHolder(musicList : ArrayList<Music>,thisContext: Context,mainactivity: MainActivity,private val binding: FavoriteViewBinding) :
+    class ViewHolder(
+        musicList: ArrayList<Music>,
+        thisContext: Context,
+        mainactivity: MainActivity,
+        private val binding: FavoriteViewBinding
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
 
@@ -51,8 +55,9 @@ class FavoriteAdapter(thisContext: Context, mainactivity: MainActivity, private 
         val mainactivity = mainactivity
         val thisContext = thisContext
 
-        fun bind(position:Int,currentMusic: Music, listener: OnItemClickListener?) {
+        fun bind(position: Int, currentMusic: Music, listener: OnItemClickListener?) {
 
+            if (currentMusic.favorite == true) {
                 binding.songNameFV.text = currentMusic.songtitle
 
 
@@ -76,7 +81,8 @@ class FavoriteAdapter(thisContext: Context, mainactivity: MainActivity, private 
                     mainactivity.replaceFragment(MusicView(musicList))
                     Log.d("", "po preket ")
                 }
-        }
+            }
 
+        }
     }
 }

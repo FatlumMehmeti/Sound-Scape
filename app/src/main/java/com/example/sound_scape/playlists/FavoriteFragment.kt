@@ -38,7 +38,6 @@ class FavoriteFragment : Fragment() {
         binding.favRec.setHasFixedSize(true)
 
         musicList = arrayListOf()
-//        addDataToList()
         binding.favRec.layoutManager = GridLayoutManager(requireContext(), 4)
 
         musicList = arrayListOf()
@@ -46,7 +45,7 @@ class FavoriteFragment : Fragment() {
         musicAdapter = FavoriteAdapter(requireContext(),mainActivity,musicList)
         _binding!!.favRec.adapter = musicAdapter
 
-        //getMusicData()
+        getMusicData()
     }
 
 private fun getMusicData() {

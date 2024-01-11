@@ -46,10 +46,10 @@ class MostPlayedFragment : Fragment() {
         musicAdapter = MostPlayedAdapter(requireContext(),mainActivity,musicList)
         _binding!!.favRec.adapter = musicAdapter
 
-        //getMusicData()
+        getMostplayedData()
     }
 
-private fun getMusicData() {
+private fun getMostplayedData() {
     dbRef = FirebaseDatabase.getInstance().getReference("Music")
 
     dbRef.addValueEventListener(object : ValueEventListener {

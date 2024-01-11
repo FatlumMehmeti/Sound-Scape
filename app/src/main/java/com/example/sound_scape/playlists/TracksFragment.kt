@@ -38,16 +38,18 @@ class TracksFragment : Fragment() {
         binding.favRec.setHasFixedSize(true)
 
         musicList = arrayListOf()
-//        addDataToList()
         binding.favRec.layoutManager = GridLayoutManager(requireContext(), 4)
 
         musicAdapter = TracksAdapter(musicList)
         binding.favRec.adapter = musicAdapter
 
-        getMusicData()
+
+        addedSongsData()
     }
 
-    private fun getMusicData() {
+
+
+    private fun addedSongsData() {
         dbRef = FirebaseDatabase.getInstance().getReference("ADDED SONGS")
 
         dbRef.addValueEventListener(object : ValueEventListener {
