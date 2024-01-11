@@ -1,23 +1,31 @@
-package com.example.teste_per_app.activity.authentication
+package com.example.sound_scape.activity.authentication
 
+import User
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.sound_scape.R
 import com.example.sound_scape.databinding.ActivitySignUpBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.jakewharton.rxbinding2.widget.RxTextView
 
 @SuppressLint ("CheckResult")
 class SignUpActivity : AppCompatActivity(){
     private lateinit var binding: ActivitySignUpBinding
+    private lateinit var auth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        auth = FirebaseAuth.getInstance()
 
 
         binding.signupBtn.isEnabled = false
@@ -94,7 +102,10 @@ class SignUpActivity : AppCompatActivity(){
         }
 
         binding.signupBtn.setOnClickListener{
-            startActivity(Intent(this, LoginActivity::class.java))
+            val email =binding.email.text.toString().trim()
+            val password = binding.inputPassword.text.toString().trim()
+            val username = binding.inputUsername.text.toString().trim()
+            registerUser(email, password, username)
         }
         binding.haveAccount.setOnClickListener{
             startActivity(Intent(this, LoginActivity::class.java))
@@ -113,4 +124,40 @@ class SignUpActivity : AppCompatActivity(){
     private fun showPasswordConfirmAlert (isNotValid: Boolean){
         binding.confirmPassword.error = if (isNotValid) "Password isn't the same" else null
     }
+
+    private fun registerUser(email: String, password: String, username: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val userId = FirebaseAuth.getInstance().currentUser?.uid
+                    val user = User(userId, email, username)
+
+                    // Save the user data to the database
+                    saveUserDataToDatabase(userId, user)
+
+                    // Continue with the rest of your code
+                    val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putBoolean("isNewUser", true)
+                    editor.apply()
+
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun saveUserDataToDatabase(userId: String?, user: User) {
+        if (userId != null) {
+            val databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
+            databaseReference.setValue(user)
+        } else {
+            // Handle the case where userId is null
+            Toast.makeText(this, "Error saving user data to the database", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
 }

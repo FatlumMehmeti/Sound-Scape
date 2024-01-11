@@ -2,6 +2,7 @@ package com.example.teste_per_app.settings
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import com.example.sound_scape.MainActivity
 import com.example.sound_scape.R
+import com.example.sound_scape.activity.EditAccountActivity
 import com.example.sound_scape.databinding.FragmentSettingsBinding
 
 
@@ -60,7 +62,7 @@ class Settings : Fragment(R.layout.fragment_settings) {
             sharedPreferences.edit {
                 putBoolean("nightMode", isChecked)
             }
-          mainactivity.restartActivity()
+            mainactivity.restartActivity()
 
         }
         //notificaton
@@ -73,13 +75,17 @@ class Settings : Fragment(R.layout.fragment_settings) {
 //                }}
         //Security
         binding.apply {
-                security.setOnClickListener { mainactivity.replaceFragment(Security())}
-                addSong.setOnClickListener { mainactivity.replaceFragment(Add_song()) }
-                soundSpeed.setOnClickListener { mainactivity.replaceFragment(Sound_speed_and_time_limit())}
-                infoNav.setOnClickListener { mainactivity.replaceFragment(Info()) }
-                faq.setOnClickListener { mainactivity.replaceFragment(Frequently_Asked_question()) }
-                feedback.setOnClickListener { mainactivity.replaceFragment(Feedback()) }
-                exit.setOnClickListener { showExitDialog() }
+            security.setOnClickListener { mainactivity.replaceFragment(Security())}
+            addSong.setOnClickListener { mainactivity.replaceFragment(Add_song()) }
+            soundSpeed.setOnClickListener { mainactivity.replaceFragment(Sound_speed_and_time_limit())}
+            infoNav.setOnClickListener { mainactivity.replaceFragment(Info()) }
+            faq.setOnClickListener { mainactivity.replaceFragment(Frequently_Asked_question()) }
+            feedback.setOnClickListener { mainactivity.replaceFragment(Feedback()) }
+            exit.setOnClickListener { showExitDialog() }
+
+            binding.editAccount.setOnClickListener {
+                startActivity(Intent(requireContext(), EditAccountActivity::class.java))
+            }
 
         }
     }
@@ -95,11 +101,9 @@ class Settings : Fragment(R.layout.fragment_settings) {
             }
             .show()
     }
-        override fun onDestroyView() {
-                super.onDestroyView()
-                // Clean up the binding instance
-                _binding = null
-            }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Clean up the binding instance
+        _binding = null
+    }
 }
-
-
