@@ -25,14 +25,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
-import java.util.Objects
 import kotlin.properties.Delegates
 
-class MusicView(songPosition:Int,musicList : ArrayList<Music>) : Fragment(R.layout.music_player), MusicAdapter.OnItemClickListener {
+class MusicView(musicList : ArrayList<Music>) : Fragment(R.layout.music_player), MusicAdapter.OnItemClickListener {
 
     private lateinit var mediaPlayer: MediaPlayer
     var songList =  musicList
-    private var currentSongIndex: Int = songPosition
+    private var currentSongIndex: Int = 0
      var isPlaying: Boolean = false
     private var isShuffleEnabled: Boolean = false
     private var isRepeatEnabled: Boolean = false
@@ -59,7 +58,6 @@ class MusicView(songPosition:Int,musicList : ArrayList<Music>) : Fragment(R.layo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d(songList.size.toString(),"SIZEIII I LISTETTTSTS")
         view2 = view
         // Initialize mediaPlayer
         mediaPlayer = MediaPlayer()
@@ -76,6 +74,9 @@ class MusicView(songPosition:Int,musicList : ArrayList<Music>) : Fragment(R.layo
             mainactivity.replaceFragment(HomeFragment())
         }
 
+
+        val musicAdapter = MusicAdapter(requireContext(),mainactivity,songList)
+        musicAdapter.setOnItemClickListener(this)
         val intent = Intent(requireContext(), BackgroundMusicService::class.java)
         mainactivity.startService(intent)
 
@@ -99,17 +100,17 @@ class MusicView(songPosition:Int,musicList : ArrayList<Music>) : Fragment(R.layo
         nextButton.setOnClickListener {
             playNextSong()
         }
-//        likesong.setOnClickListener {
-//            if(songList[currentSongIndex].favorite==false){
-//                songList[currentSongIndex].favorite=true
-//                FirebaseDatabase.getInstance().getReference("Music").child(songList[currentSongIndex].songtitle).child("favorite").setValue(true)
-//              likesong.setImageResource(R.drawable.favorite)
-//            }else if(songList[currentSongIndex].favorite==true){
-//                songList[currentSongIndex].favorite=false
-//                FirebaseDatabase.getInstance().getReference("Music").child(songList[currentSongIndex].songtitle).child("favorite").setValue(false)
-//                likesong.setImageResource(R.drawable.favorite)
-//            }
-//        }
+        likesong.setOnClickListener {
+            if(songList[currentSongIndex].favorite==false){
+                songList[currentSongIndex].favorite=true
+                FirebaseDatabase.getInstance().getReference("Music").child(songList[currentSongIndex].songtitle).child("favorite").setValue(true)
+              likesong.setImageResource(R.drawable.favorite)
+            }else if(songList[currentSongIndex].favorite==true){
+                songList[currentSongIndex].favorite=false
+                FirebaseDatabase.getInstance().getReference("Music").child(songList[currentSongIndex].songtitle).child("favorite").setValue(false)
+                likesong.setImageResource(R.drawable.favorite)
+            }
+        }
         previousButton.setOnClickListener {
             playPreviousSong()
         }
@@ -178,7 +179,6 @@ class MusicView(songPosition:Int,musicList : ArrayList<Music>) : Fragment(R.layo
         })
 
 
-
     }
 
     private fun togglePlayback() {
@@ -197,11 +197,10 @@ class MusicView(songPosition:Int,musicList : ArrayList<Music>) : Fragment(R.layo
         Log.d("songListSie:" , songList.size.toString())
         Log.d("songListSie:" , currentSongIndex.toString())
 
+        currentSongIndex++
 
         if(currentSongIndex==songList.size){
             currentSongIndex = 0
-        }else{
-            currentSongIndex++
         }
 
         if(currentSongIndex<=songList.size-1) {
@@ -216,6 +215,7 @@ class MusicView(songPosition:Int,musicList : ArrayList<Music>) : Fragment(R.layo
         currentSongIndex--
         if (currentSongIndex < 0) {
             currentSongIndex = songList.size - 1
+
         }
         val previousSong = songList[currentSongIndex]
         playSong(previousSong)

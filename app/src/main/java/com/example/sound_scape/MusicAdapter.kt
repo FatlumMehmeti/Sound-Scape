@@ -12,13 +12,12 @@ import com.example.sound_scape.databinding.MusicViewBinding
 import com.example.sound_scape.player.MusicView
 import com.squareup.picasso.Picasso
 
-class MusicAdapter(thisContext: Context, mainactivity: MainActivity, musicList: ArrayList<Music>) :
+class MusicAdapter(thisContext: Context, mainactivity: MainActivity, private var musicList: ArrayList<Music>) :
     RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
 
     private var mListener: OnItemClickListener? = null
     val mainactivity = mainactivity
     val thisContext = thisContext
-    var musicList = musicList
 
     interface OnItemClickListener {
         fun onItemClick(position: Int, music: Music)
@@ -30,12 +29,12 @@ class MusicAdapter(thisContext: Context, mainactivity: MainActivity, musicList: 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = MusicViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(musicList,mainactivity,binding)
+        return ViewHolder(musicList,thisContext,mainactivity,binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentEmp = musicList[position]
-        holder.bind(position,currentEmp, mListener)
+        holder.bind(currentEmp, mListener)
     }
 
     override fun getItemCount(): Int {
@@ -47,13 +46,15 @@ class MusicAdapter(thisContext: Context, mainactivity: MainActivity, musicList: 
         notifyDataSetChanged()
     }
 
-    class ViewHolder(musicList : ArrayList<Music>,mainactivity: MainActivity,private val binding: MusicViewBinding) :
+    class ViewHolder(musicList : ArrayList<Music>,thisContext: Context,mainactivity: MainActivity,private val binding: MusicViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
 
         val musicList = musicList
         val mainactivity = mainactivity
+        val thisContext = thisContext
 
-        fun bind(position:Int,currentMusic: Music, listener: OnItemClickListener?) {
+        fun bind(currentMusic: Music, listener: OnItemClickListener?) {
             binding.songNameMV.text = currentMusic.songtitle
             binding.songAlbumMV.text = currentMusic.albumname
 
@@ -76,8 +77,8 @@ class MusicAdapter(thisContext: Context, mainactivity: MainActivity, musicList: 
             }
                 binding.songfragmenti.setOnClickListener{
                     listener?.onItemClick(adapterPosition, currentMusic)
-                    mainactivity.replaceFragment(MusicView(position,musicList))
-                    Log.d(musicList.size.toString(),"HIIIIIIIIIII")
+                    mainactivity.replaceFragment(MusicView(musicList))
+                    Log.d("","po preket ")
                 }
 
         }

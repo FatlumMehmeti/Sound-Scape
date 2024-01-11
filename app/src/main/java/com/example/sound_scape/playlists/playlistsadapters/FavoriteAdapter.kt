@@ -79,7 +79,7 @@ class FavoriteAdapter(thisContext: Context, mainactivity: MainActivity, private 
                 }
                 binding.playthis.setOnClickListener {
                     listener?.onItemClick(adapterPosition, currentMusic)
-                    mainactivity.replaceFragment(MusicView(position,musicList))
+                    mainactivity.replaceFragment(MusicView(musicList))
                     Log.d("", "po preket ")
                 }
         }

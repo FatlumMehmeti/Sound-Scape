@@ -77,7 +77,7 @@ class MostPlayedAdapter(thisContext: Context, mainactivity: MainActivity, privat
             }
             binding.playthis.setOnClickListener{
                 listener?.onItemClick(adapterPosition, currentMusic)
-                mainactivity.replaceFragment(MusicView(position,musicList))
+                mainactivity.replaceFragment(MusicView(musicList))
                 Log.d("","po preket ")
             }
 
